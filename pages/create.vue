@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center w-full">
     <!-- {{ toDoLists }} -->
-    <el-form class="w-full md:w-1/2 lg:w-1/3 p-3 bg-gray-300">
+    <el-form class="w-full md:w-1/2 lg:w-1/3 p-3 bg-gray-100">
       <el-form-item label-position="top" label="Название задачи">
         <el-input maxlength="30" v-model="toDo.title" />
       </el-form-item>
@@ -11,28 +11,30 @@
         :key="task.id"
         :label="`Описание подзадачи №${index + 1}`"
       >
-        <el-input maxlength="30" v-model="task.description" />
-        <el-button @click="deleteTask(task.id)">Удалить</el-button>
+        <el-input class="mb-3" maxlength="30" v-model="task.description" />
+        <el-button type="danger" plain @click="deleteTask(task.id)">Удалить</el-button>
       </el-form-item>
       <el-form-item label-position="top">
-        <el-button class="w-full" @click="addTask"
+        <el-button type="primary" plain class="w-full" @click="addTask"
           >Добавить подзадачу</el-button
         >
       </el-form-item>
+      <el-button-group class="w-full">
       <el-popconfirm
         width="300"
         @confirm="navigateTo('/')"
         title="Вы уверены, что хотите отменить создание задачи?"
       >
         <template #reference>
-          <el-button>Отменить</el-button>
+          <el-button class="w-1/2" type="danger" plain>Отменить</el-button>
         </template>
         <template #actions="{ confirm, cancel }">
           <el-button @click="cancel">Нет</el-button>
           <el-button @click="confirm">Да</el-button>
         </template>
       </el-popconfirm>
-      <el-button @click="createTodo">Сохранить</el-button>
+      <el-button class="w-1/2" type="success" plain @click="createTodo">Сохранить</el-button>
+      </el-button-group>
     </el-form>
   </div>
 </template>
@@ -44,6 +46,7 @@ const toDoLists = useState<TodoItem[]>("toDoLists");
 const toDo = ref<TodoItem>({
   id: Date.now(),
   title: "",
+  completed: false,
   tasks: [
     {
       id: Date.now(),

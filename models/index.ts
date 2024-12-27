@@ -8,6 +8,7 @@ interface TodoItem {
     id: number;
     title: string;
     tasks: Task[]
+    completed: boolean;
 }
 
 type TodoList = TodoItem[];
