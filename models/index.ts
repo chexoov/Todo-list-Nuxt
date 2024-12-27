@@ -1,4 +1,5 @@
 interface Task {
+    id: number;
     description: string;
     completed: boolean; 
 }
@@ -11,4 +12,4 @@ interface TodoItem {
 
 type TodoList = TodoItem[];
 
-export type { TodoItem, TodoList };
+export type { TodoItem, TodoList, Task };
