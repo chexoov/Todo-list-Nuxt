@@ -42,7 +42,7 @@ import type { TodoItem, Task } from "~/models";
 
 const toDoLists = useState<TodoItem[]>("toDoLists");
 const toDo = ref<TodoItem>({
-  id: 1,
+  id: Date.now(),
   title: "",
   tasks: [
     {
