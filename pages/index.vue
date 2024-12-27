@@ -1,5 +1,4 @@
 <template>
-  {{ toDoLists }}
   <el-container class="flex justify-center">
     <div class="w-full bg-gray-300 md:w-1/2 lg:w-1/3 p-3">
       <h1 class="text-center mb-3">Список задач</h1>
@@ -11,10 +10,16 @@
         :key="item.id"
         class="flex justify-between mb-5 p-3 border border-gray-400"
       >
-        <div class="flex justify-center items-center">{{ index + 1 }}</div>
-        <div>
-          <h2 class="font-bold">{{ item.title }}</h2>
-          <div>1. {{ item.tasks[0].description }}</div>
+        <div class="flex w-[30px] justify-center items-center">
+          {{ index + 1 }}.
+        </div>
+        <div class="flex flex-grow flex-col justify-start items-start overflow-hidden text-ellipsis whitespace-nowrap mx-5">
+          <h2 class="font-bold whitespace-nowrap overflow-hidden text-ellipsis">
+            {{ item.title }}
+          </h2>
+          <div class="whitespace-nowrap overflow-hidden text-ellipsis">
+            1. {{ item.tasks[0].description }}
+          </div>
         </div>
         <div class="flex flex-col gap-2 justify-center items-center">
           <el-popconfirm
@@ -80,3 +85,9 @@ const deleteTodoItem = (id: number) => {
   toDoLists.value = toDoLists.value.filter((item: TodoList) => item.id !== id);
 };
 </script>
+
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+</style>

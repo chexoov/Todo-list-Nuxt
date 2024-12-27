@@ -3,7 +3,7 @@
     <!-- {{ toDoLists }} -->
     <el-form class="w-full md:w-1/2 lg:w-1/3 p-3 bg-gray-300">
       <el-form-item label-position="top" label="Название задачи">
-        <el-input v-model="toDo.title" />
+        <el-input maxlength="30" v-model="toDo.title" />
       </el-form-item>
       <el-form-item
         label-position="top"
@@ -11,7 +11,7 @@
         :key="task.id"
         :label="`Описание подзадачи №${index + 1}`"
       >
-        <el-input v-model="task.description" />
+        <el-input maxlength="30" v-model="task.description" />
         <el-button @click="deleteTask(task.id)">Удалить</el-button>
       </el-form-item>
       <el-form-item label-position="top">
@@ -54,6 +54,8 @@ const toDo = ref<TodoItem>({
 });
 
 const createTodo = async () => {
+  if (toDo.value.title.length === 0) return;
+  if (toDo.value.tasks[0].description.length === 0) return;
   toDoLists.value.push(toDo.value);
   await navigateTo("/");
 };
