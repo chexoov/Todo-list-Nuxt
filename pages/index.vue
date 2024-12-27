@@ -3,23 +3,33 @@
     <div class="w-full bg-gray-100 md:w-1/2 lg:w-1/3 p-3">
       <h1 class="text-center mb-3">Список задач</h1>
       <NuxtLink to="/create"
-        ><el-button type="success" plain class="w-full mb-3">Создать задачу</el-button></NuxtLink
+        ><el-button type="success" plain class="w-full mb-3"
+          >Создать задачу</el-button
+        ></NuxtLink
       >
       <div
-      v-for="(item, index) in toDoLists"
-      :key="item.id"
-      @click="changeCompleted(item.id)"
-        class="flex justify-between mb-5 p-3 border border-gray-400 bg-gray-50 cursor-pointer "
+        v-for="(item, index) in toDoLists"
+        :key="item.id"
+        @click="changeCompleted(item.id)"
+        class="flex justify-between mb-5 p-3 border border-gray-400 bg-gray-50 cursor-pointer"
         :class="{ 'bg-green-100': item.completed }"
       >
         <div class="flex w-[30px] justify-center items-center">
           {{ index + 1 }}.
         </div>
-        <div class="flex flex-grow flex-col justify-start items-start overflow-hidden text-ellipsis whitespace-nowrap mx-5">
-          <h2 class="font-bold whitespace-nowrap overflow-hidden text-ellipsis" :class="{ 'line-through': item.completed }">
+        <div
+          class="flex flex-grow flex-col justify-start items-start overflow-hidden text-ellipsis whitespace-nowrap mx-5"
+        >
+          <h2
+            class="font-bold whitespace-nowrap overflow-hidden text-ellipsis"
+            :class="{ 'line-through': item.completed }"
+          >
             {{ item.title }}
           </h2>
-          <div class="whitespace-nowrap overflow-hidden text-ellipsis" :class=" { 'line-through': item.completed }">
+          <div
+            class="whitespace-nowrap overflow-hidden text-ellipsis"
+            :class="{ 'line-through': item.completed }"
+          >
             1. {{ item.tasks[0].description }}
           </div>
         </div>
@@ -30,7 +40,9 @@
             title="Вы уверены, что хотите удалить задачу?"
           >
             <template #reference>
-              <el-button @click.stop type="danger" plain class="w-full">Удалить</el-button>
+              <el-button @click.stop type="danger" plain class="w-full"
+                >Удалить</el-button
+              >
             </template>
             <template #actions="{ confirm, cancel }">
               <el-button @click="cancel">Нет</el-button>
@@ -39,7 +51,9 @@
           </el-popconfirm>
 
           <NuxtLink @click.stop :to="`/edit/${item.id}`">
-            <el-button type="primary" plain class="w-full">Редактировать</el-button>
+            <el-button type="primary" plain class="w-full"
+              >Редактировать</el-button
+            >
           </NuxtLink>
         </div>
       </div>
@@ -78,14 +92,18 @@ const ToDoListsInit: TodoList = [
   },
 ];
 
+const toDoLists = useState("toDoLists", () => []);
 
-
-const toDoLists = useState("toDoLists", () => {
+const initTodoList = () => {
   if (nuxtStorage.localStorage.getData("toDoLists")) {
-    return nuxtStorage.localStorage.getData("toDoLists");
+    toDoLists.value = nuxtStorage.localStorage.getData("toDoLists");
+    return;
   }
-  return ToDoListsInit;
-});
+
+  nuxtStorage.localStorage.setData("toDoLists", ToDoListsInit);
+};
+
+initTodoList();
 
 const deleteTodoItem = (id: number) => {
   toDoLists.value = toDoLists.value.filter((item: TodoList) => item.id !== id);
@@ -98,7 +116,11 @@ const changeCompleted = (id: number) => {
     }
     return item;
   });
-}
+};
+
+watch(toDoLists, () => {
+  nuxtStorage.localStorage.setData("toDoLists", toDoLists.value);
+});
 </script>
 
 <style scoped>
