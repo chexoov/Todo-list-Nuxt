@@ -30,7 +30,7 @@
             title="Вы уверены, что хотите удалить задачу?"
           >
             <template #reference>
-              <el-button type="danger" plain class="w-full">Удалить</el-button>
+              <el-button @click.stop type="danger" plain class="w-full">Удалить</el-button>
             </template>
             <template #actions="{ confirm, cancel }">
               <el-button @click="cancel">Нет</el-button>
@@ -38,7 +38,7 @@
             </template>
           </el-popconfirm>
 
-          <NuxtLink :to="`/edit/${item.id}`">
+          <NuxtLink @click.stop :to="`/edit/${item.id}`">
             <el-button type="primary" plain class="w-full">Редактировать</el-button>
           </NuxtLink>
         </div>
@@ -77,6 +77,8 @@ const ToDoListsInit: TodoList = [
     ],
   },
 ];
+
+
 
 const toDoLists = useState("toDoLists", () => {
   if (nuxtStorage.localStorage.getData("toDoLists")) {
