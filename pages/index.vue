@@ -13,8 +13,11 @@
           <h2 class="font-bold">{{ item.title }}</h2>
           <div>1. {{ item.tasks[0].description }}</div>
         </div>
-        <div class="flex justify-center items-center">
-          <el-button>Добавить</el-button>
+        <div class="flex flex-col gap-2  justify-center items-center ">
+          <el-button class="w-full">Удалить</el-button>
+          <NuxtLink :to="`/edit/${item.id}`">
+          <el-button class="w-full">Редактировать</el-button>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -24,6 +27,7 @@
 
 <script setup lang="ts">
 import type { TodoList } from "~/models";
+import nuxtStorage from 'nuxt-storage';
 
 const ToDoListsInit: TodoList = [
   {
@@ -31,6 +35,7 @@ const ToDoListsInit: TodoList = [
     title: "test",
     tasks: [
       {
+        id: Date.now(),
         description: "купить яйца",
         completed: false,
       },
@@ -41,6 +46,7 @@ const ToDoListsInit: TodoList = [
     title: "test2",
     tasks: [
       {
+        id: Date.now(),
         description: "купить яйца 2",
         completed: true,
       },
@@ -48,5 +54,12 @@ const ToDoListsInit: TodoList = [
   },
 ];
 
-const toDoLists = useState("toDoLists", () => ToDoListsInit);
+const toDoLists = useState("toDoLists", () => {
+  if (nuxtStorage.localStorage.getData("toDoLists")) {
+    return nuxtStorage.localStorage.getData("toDoLists");
+  }
+  return ToDoListsInit
+  });
+
+
 </script>
