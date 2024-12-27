@@ -12,7 +12,9 @@
         :label="`Описание подзадачи №${index + 1}`"
       >
         <el-input class="mb-3" maxlength="30" v-model="task.description" />
-        <el-button type="danger" plain  @click="deleteTask(task.id)">Удалить</el-button>
+        <el-button type="danger" plain @click="deleteTask(task.id)"
+          >Удалить</el-button
+        >
       </el-form-item>
       <el-form-item label-position="top">
         <el-button class="w-full" type="primary" plain @click="createTask"
@@ -20,21 +22,23 @@
         >
       </el-form-item>
       <el-button-group class="w-full">
-      <el-popconfirm
-        width="300"
-        @confirm="navigateTo('/')"
-        title="Вы уверены, что хотите отменить создание задачи?"
-      >
-        <template #reference>
-          <el-button class="w-1/2" type="danger" plain >Отменить</el-button>
-        </template>
-        <template #actions="{ confirm, cancel }">
-          <el-button @click="cancel">Нет</el-button>
-          <el-button @click="confirm">Да</el-button>
-        </template>
-      </el-popconfirm>
+        <el-popconfirm
+          width="300"
+          @confirm="navigateTo('/')"
+          title="Вы уверены, что хотите отменить создание задачи?"
+        >
+          <template #reference>
+            <el-button class="w-1/2" type="danger" plain>Отменить</el-button>
+          </template>
+          <template #actions="{ confirm, cancel }">
+            <el-button @click="cancel">Нет</el-button>
+            <el-button @click="confirm">Да</el-button>
+          </template>
+        </el-popconfirm>
 
-      <el-button class="w-1/2" type="success" plain @click="editTask">Сохранить изменения</el-button>
+        <el-button class="w-1/2" type="success" plain @click="editTask"
+          >Сохранить изменения</el-button
+        >
       </el-button-group>
     </el-form>
   </div>
@@ -42,8 +46,11 @@
 
 <script setup lang="ts">
 import type { TodoItem, Task } from "~/models";
+import nuxtStorage from "nuxt-storage";
 
 const toDoLists = useState<TodoItem[]>("toDoLists");
+toDoLists.value = nuxtStorage.localStorage.getData("toDoLists");
+
 const toDo = ref<TodoItem>({
   id: Date.now(),
   title: "",
@@ -88,6 +95,8 @@ const editTask = async () => {
     }
     return item;
   });
+
+  nuxtStorage.localStorage.setData("toDoLists", toDoLists.value);
 
   await navigateTo("/");
 };
