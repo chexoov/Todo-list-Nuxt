@@ -46,10 +46,21 @@
 
 <script setup lang="ts">
 import type { TodoItem, Task } from "~/models";
-import nuxtStorage from "nuxt-storage";
 
 const toDoLists = useState<TodoItem[]>("toDoLists");
-toDoLists.value = nuxtStorage.localStorage.getData("toDoLists");
+
+const getList = () => {
+  if (window.localStorage.getItem("toDoLists")) {
+    toDoLists.value = JSON.parse(
+      window.localStorage.getItem("toDoLists") || "[]"
+    );
+    return;
+  }
+};
+
+onMounted(() => {
+  getList();
+});
 
 const toDo = ref<TodoItem>({
   id: Date.now(),
@@ -96,7 +107,7 @@ const editTask = async () => {
     return item;
   });
 
-  nuxtStorage.localStorage.setData("toDoLists", toDoLists.value);
+  window.localStorage.setItem("toDoLists", JSON.stringify(toDoLists.value));
 
   await navigateTo("/");
 };

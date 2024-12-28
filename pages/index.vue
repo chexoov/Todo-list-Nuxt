@@ -62,8 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import type { TodoList, TodoItem } from "~/models";
-import nuxtStorage from "nuxt-storage";
+import type { TodoList, TodoItem } from "../models";
 
 const ToDoListsInit: TodoList = [
   {
@@ -92,21 +91,25 @@ const ToDoListsInit: TodoList = [
   },
 ];
 
-const toDoLists = useState("toDoLists", () => []);
+const toDoLists = useState<TodoList>("toDoLists", () => []);
 
 const initTodoList = () => {
-  if (nuxtStorage.localStorage.getData("toDoLists")) {
-    toDoLists.value = nuxtStorage.localStorage.getData("toDoLists");
+  if (window.localStorage.getItem("toDoLists")) {
+    toDoLists.value = JSON.parse(
+      window.localStorage.getItem("toDoLists") || "[]"
+    );
     return;
   }
 
-  nuxtStorage.localStorage.setData("toDoLists", ToDoListsInit);
+  window.localStorage.setItem("toDoLists", JSON.stringify(ToDoListsInit));
 };
 
-initTodoList();
+onMounted(() => {
+  initTodoList();
+});
 
 const deleteTodoItem = (id: number) => {
-  toDoLists.value = toDoLists.value.filter((item: TodoList) => item.id !== id);
+  toDoLists.value = toDoLists.value.filter((item: TodoItem) => item.id !== id);
 };
 
 const changeCompleted = (id: number) => {
@@ -119,7 +122,7 @@ const changeCompleted = (id: number) => {
 };
 
 watch(toDoLists, () => {
-  nuxtStorage.localStorage.setData("toDoLists", toDoLists.value);
+  window.localStorage.setItem("toDoLists", JSON.stringify(toDoLists.value));
 });
 </script>
 
