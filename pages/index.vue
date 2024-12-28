@@ -101,6 +101,8 @@ const initTodoList = () => {
     return;
   }
 
+  toDoLists.value = ToDoListsInit;
+
   window.localStorage.setItem("toDoLists", JSON.stringify(ToDoListsInit));
 };
 
